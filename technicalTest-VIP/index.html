@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Technical Test</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .container{
+      box-shadow: 5px 5px 15px grey;
+        border: 1px solid grey;
+        padding: 40px;
+        border-radius: 8px;
+    }
+</style> 
+</head>
+
+<body>
+
+  <h1 class="text-center mb-4 mt-5">Technical Test</h1>
+  <div class="container mt-5">
+   
+
+    <!-- Question about array -->
+    <div class="question mb-4">
+      <h6>Insert your array Here!:</h6>
+      <div class="form-floating">
+        <textarea class="form-control" id="array" rows="3">[...</textarea>
+        <label for="floatingTextarea">Note: Insert values as Array Format, For example passing in [1, 1, 2, 4, 4, 5, 5,
+          5, 6, 7, 9]
+          bellow ↓ .</label>
+      </div>
+    </div>
+
+    <!--  output all pairs would output -->
+    <div class="question mb-4">
+      <h6>1. output all pairs would output:</h6>
+      <div class="form-floating">
+        <textarea class="form-control" id="q1" disabled rows="3"></textarea>
+        <label for="floatingTextarea">Question 01.</label>
+      </div>
+    </div>
+
+    <!-- Question about array -->
+    <div class="question mb-4">
+      <h6>2. output unique pairs only once would output:</h6>
+      <div class="form-floating">
+        <textarea class="form-control" id="q2" disabled rows="3"></textarea>
+        <label for="floatingTextarea">Question 02.</label>
+      </div>
+    </div>
+
+    <!-- Question about array -->
+    <div class="question mb-4">
+      <h6>3. output the same combo pair only once would output:</h6>
+      <div class="form-floating">
+        <textarea class="form-control" id="q3" disabled rows="3"></textarea>
+        <label for="floatingTextarea">Question 03.</label>
+      </div>
+    </div>
+    <button id="send" class="btn btn-outline-success">
+      Execute
+    </button>
+
+  </div>
+
+  <!-- Javascript section -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
+  <script>
+
+    document.getElementById('send').addEventListener('click', validarContenido);
+
+    //Function to validate the array and QUESTIONS HERE 
+    function validarContenido() {
+      const contenido = document.getElementById('array').value.trim();
+      const regex = /^\[\s*(?:\d+\s*,\s*)*\d*\s*\]$/;
+
+      if (regex.test(contenido)) {
+
+        const getArrayValue = document.getElementById('array').value;
+        const array = JSON.parse(contenido);
+
+        // **************  QUESTION 01 ************** 
+        const output = [];
+        for (let i = 0; i < array.length; i++) {
+          for (let j = i + 1; j < array.length; j++) {
+            if (array[i] + array[j] === 10) {
+              output.push(`[${array[i]}, ${array[j]}]`);
+              output.push(`[${array[j]}, ${array[i]}]`);
+            }
+          }
+        }
+        let ResultQ1 = sortFunction(output);
+        document.getElementById('q1').value = ResultQ1;
+        // **************  QUESTION 01 ************** 
+
+        // **************  QUESTION 02 ************** 
+        const pairsOnce = Array.from(new Set(output.map(JSON.stringify))).map(JSON.parse);
+        document.getElementById('q2').value = pairsOnce;
+        // **************  QUESTION 02 ************** 
+
+        // **************  QUESTION 03 ************** 
+        const output2 = [];
+        for (let i = 0; i < array.length; i++) {
+          for (let j = i + 1; j < array.length; j++) {
+            if (array[i] + array[j] === 10) {
+              output2.push(`[${array[i]}, ${array[j]}]`);
+            }
+          }
+        }
+        const OutDuplicates = Array.from(new Set(output2.map(JSON.stringify))).map(JSON.parse);
+        document.getElementById('q3').value = sortFunction(OutDuplicates);;
+        // **************  QUESTION 03 ************** 
+
+      } else {
+        alert('Array Format incorrect, Righ Format is [1, 2, 4, 5, 6, 9]');
+      }
+    }
+
+    //Funcion to give the right order
+    function sortFunction(value) {
+      return value.sort((a, b) => {
+        let numA = parseInt(a.substring(1, a.indexOf(',')));
+        let numB = parseInt(b.substring(1, b.indexOf(',')));
+        return numA - numB;
+      });
+    }
+
+  </script>
+</body>
+
+</html>
